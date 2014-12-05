@@ -78,6 +78,7 @@ func (nc *NamedClient) put(body io.Reader, ctype string) (dst string, err error)
 	clength, _ := ioutil.ReadAll(b1)
 	dst = fmt.Sprintf("%s.ico", Md5HexDigest(b2))
 
-	err = bucket.PutReader(dst, b3, int64(len(clength)), ctype, s3.PublicRead, s3.Options{})
+	err = bucket.PutReader(
+		dst, b3, int64(len(clength)), ctype, s3.PublicRead, s3.Options{})
 	return
 }
