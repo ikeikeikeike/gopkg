@@ -62,6 +62,20 @@ func (r *Client) Get(key string) interface{} {
 	return nil
 }
 
+func (r *Client) Del(key string) interface{} {
+	if v, err := r.Do("DEL", key); err == nil {
+		return v
+	}
+	return nil
+}
+
+func (r *Client) Listall(key string) interface{} {
+	if v, err := r.Do("LRANGE", key, 0, -1); err == nil {
+		return v
+	}
+	return nil
+}
+
 func (r *Client) Rpush(key string, val interface{}) (err error) {
 	_, err = r.Do("RPUSH", key, val)
 	return
