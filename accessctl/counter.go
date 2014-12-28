@@ -47,3 +47,7 @@ func (c *Counter) Listall() (list []string) {
 	}
 	return
 }
+
+func (c *Counter) Clean() {
+	c.rc.Del(c.baseKey)
+}
