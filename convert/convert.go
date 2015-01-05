@@ -2,7 +2,9 @@ package convert
 
 import (
 	"bytes"
+	"crypto/md5"
 	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 	"regexp"
@@ -133,6 +135,12 @@ func (f StrTo) Uint32() (uint32, error) {
 func (f StrTo) Uint64() (uint64, error) {
 	v, err := strconv.ParseUint(f.String(), 10, 64)
 	return uint64(v), err
+}
+
+func (f StrTo) Md5() string {
+	h := md5.New()
+	h.Write([]byte(f.String()))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func (f StrTo) String() string {
