@@ -120,7 +120,9 @@ func facebook(url string) (result Result) {
 		return
 	}
 
-	result.Count = f[0].Total_count
+	if len(f) > 0 {
+		result.Count = f[0].Total_count
+	}
 	return
 }
 
