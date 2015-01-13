@@ -9,7 +9,7 @@ import (
 )
 
 type SesMailer struct {
-	m      *ses.SES
+	M      *ses.SES
 	E      *ses.Email
 	auth   aws.Auth
 	region aws.Region
@@ -25,20 +25,20 @@ func NewSesMailer() *SesMailer {
 		SESEndpoint: "https://email.us-east-1.amazonaws.com",
 	}
 
-	mailer := &SesMailer{m: ses.NewSES(a, r), auth: a, region: r}
+	mailer := &SesMailer{M: ses.NewSES(a, r), auth: a, region: r}
 	mailer.SetDefaultInfo()
 	return mailer
 }
 
 func (s *SesMailer) SetAuth(auth aws.Auth) *SesMailer {
 	s.auth = auth
-	s.m = ses.NewSES(auth, s.region)
+	s.M = ses.NewSES(auth, s.region)
 	return s
 }
 
 func (s *SesMailer) SetRegion(region aws.Region) *SesMailer {
 	s.region = region
-	s.m = ses.NewSES(s.auth, region)
+	s.M = ses.NewSES(s.auth, region)
 	return s
 }
 
@@ -53,7 +53,7 @@ func (s *SesMailer) SendMail(to, subject, htmlbody string) error {
 	s.E.SetSubject(subject)
 	s.E.SetBodyHtml(htmlbody)
 
-	return s.m.SendEmail(s.E)
+	return s.M.SendEmail(s.E)
 }
 
 // Async Send mail message
