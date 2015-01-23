@@ -44,7 +44,7 @@ func (s *SesMailer) SetRegion(region aws.Region) *SesMailer {
 
 func (s *SesMailer) SetDefaultInfo() *SesMailer {
 	s.E = ses.NewEmail()
-	s.E.SetSource(fmt.Sprintf("no-reply@%s", beego.AppConfig.String("httpaddr")))
+	s.E.SetSource(fmt.Sprintf("no-reply@%s", beego.AppConfig.String("domain")))
 	return s
 }
 

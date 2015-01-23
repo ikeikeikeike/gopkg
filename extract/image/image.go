@@ -32,7 +32,7 @@ type FileInfo struct {
 }
 
 func NewFileInfo(url string) (*FileInfo, error) {
-	resp, err := http.Get(url)
+	resp, err := http.Get(clean(url))
 	if err != nil {
 		return nil, err
 	}
@@ -57,4 +57,8 @@ func NewFileInfo(url string) (*FileInfo, error) {
 		Width:    img.Bounds().Dx(),
 		Height:   img.Bounds().Dy(),
 	}, nil
+}
+
+func clean(s string) string {
+	return strings.Trim(strings.Trim(s, " "), "　")
 }
