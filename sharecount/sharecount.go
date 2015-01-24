@@ -26,10 +26,11 @@ func Fetch(url string) (results []Result) {
 	go func() { c <- hatena(url) }()
 	go func() { c <- twitter(url) }()
 	go func() { c <- facebook(url) }()
-	go func() { c <- linkedin(url) }()
+	// go func() { c <- linkedin(url) }()
 
 	timeout := time.After(5000 * time.Millisecond)
-	for i := 0; i < 4; i++ {
+	// for i := 0; i < 4; i++ {
+	for i := 0; i < 3; i++ {
 		select {
 		case result := <-c:
 			results = append(results, result)
