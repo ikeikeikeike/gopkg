@@ -36,11 +36,5 @@ func (u *UserBehavior) Header(key, value string) {
 */
 func (u *UserBehavior) Behave(urlStr string) (*http.Response, error) {
 	u.request.URL, _ = urlparse.Parse(urlStr)
-
-	resp, err := u.client.Do(u.request)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return u.client.Do(u.request)
 }
