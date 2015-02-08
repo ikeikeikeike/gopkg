@@ -31,10 +31,17 @@ func (u *UserBehavior) Header(key, value string) {
 	u.request.Header.Set(key, value)
 }
 
-/*
-	return no closed body
-*/
 func (u *UserBehavior) Behave(urlStr string) (*http.Response, error) {
 	u.request.URL, _ = urlparse.Parse(urlStr)
+	return u.client.Do(u.request)
+}
+
+func (u *UserBehavior) Get(urlStr string) (*http.Response, error) {
+	return u.Behave(urlStr)
+}
+
+func (u *UserBehavior) Post(urlStr string) (*http.Response, error) {
+	u.request.URL, _ = urlparse.Parse(urlStr)
+	u.request.Method = "POST"
 	return u.client.Do(u.request)
 }
