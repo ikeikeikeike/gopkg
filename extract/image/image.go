@@ -7,6 +7,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	encimg "github.com/ikeikeikeike/gopkg/encoding/image"
+	"github.com/ikeikeikeike/gopkg/str"
 )
 
 func ExtractImagePaths(str string) (paths []string, err error) {
@@ -32,7 +33,7 @@ type FileInfo struct {
 }
 
 func NewFileInfo(url string) (*FileInfo, error) {
-	resp, err := http.Get(clean(url))
+	resp, err := http.Get(str.Clean(url))
 	if err != nil {
 		return nil, err
 	}
@@ -57,8 +58,4 @@ func NewFileInfo(url string) (*FileInfo, error) {
 		Width:    img.Bounds().Dx(),
 		Height:   img.Bounds().Dy(),
 	}, nil
-}
-
-func clean(s string) string {
-	return strings.Trim(strings.Trim(s, " "), "　")
 }
