@@ -1,12 +1,12 @@
 package image
 
 import (
-	"net/http"
 	"path"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	encimg "github.com/ikeikeikeike/gopkg/encoding/image"
+	behavior "github.com/ikeikeikeike/gopkg/net/http"
 	"github.com/ikeikeikeike/gopkg/str"
 )
 
@@ -33,7 +33,8 @@ type FileInfo struct {
 }
 
 func NewFileInfo(url string) (*FileInfo, error) {
-	resp, err := http.Get(str.Clean(url))
+	c := behavior.NewUserBehavior()
+	resp, err := c.Get(str.Clean(url))
 	if err != nil {
 		return nil, err
 	}
@@ -58,4 +59,44 @@ func NewFileInfo(url string) (*FileInfo, error) {
 		Width:    img.Bounds().Dx(),
 		Height:   img.Bounds().Dy(),
 	}, nil
+}
+
+type Info struct {
+	*behavior.UserBehavior
+	FileInfo *FileInfo
+}
+
+func NewInfo() *Info {
+	return &Info{
+		UserBehavior: behavior.NewUserBehavior(),
+	}
+}
+
+func (c *Info) Fetch(url string) (*FileInfo, error) {
+	resp, err := c.Get(str.Clean(url))
+	if err != nil {
+		return nil, err
+	}
+
+	mime := resp.Header.Get("Content-Type")
+	filename := path.Base(url)
+
+	ext, err := encimg.ImageExt(filename, mime)
+	if err != nil {
+		return nil, err
+	}
+	img, err := encimg.Decord(resp.Body, ext)
+	if err != nil {
+		return nil, err
+	}
+
+	c.FileInfo = &FileInfo{
+		Filename: filename,
+		Url:      url,
+		Ext:      ext,
+		Mime:     mime,
+		Width:    img.Bounds().Dx(),
+		Height:   img.Bounds().Dy(),
+	}
+	return c.FileInfo, nil
 }
