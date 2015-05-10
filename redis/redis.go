@@ -69,6 +69,22 @@ func (r *Client) Del(key string) interface{} {
 	return nil
 }
 
+func (r *Client) Put(key string, val interface{}, timeout int64) error {
+	var err error
+	if _, err = r.Do("SETEX", key, timeout, val); err != nil {
+		return err
+	}
+	return err
+}
+
+func (r *Client) IsExist(key string) bool {
+	v, err := redis.Bool(r.Do("EXISTS", key))
+	if err != nil {
+		return false
+	}
+	return v
+}
+
 func (r *Client) Listall(key string) interface{} {
 	if v, err := r.Do("LRANGE", key, 0, -1); err == nil {
 		return v
