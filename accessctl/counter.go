@@ -13,10 +13,10 @@ type Counter struct {
 	baseKey string
 }
 
-func NewCounter() (*Counter, error) {
+func NewCounter(config string) (*Counter, error) {
 	rc := redis.NewClient()
 
-	err := rc.Initialize(`{"conn": "127.0.0.1:6379"}`)
+	err := rc.Initialize(config)
 	if err != nil {
 		return nil, err
 	}
