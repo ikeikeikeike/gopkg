@@ -8,7 +8,6 @@ import (
 	"time"
 
 	gq "github.com/PuerkitoBio/goquery"
-	"github.com/ikeikeikeike/godic/modules/configs"
 	"github.com/ikeikeikeike/gopkg/extract/image"
 	"github.com/ikeikeikeike/gopkg/str"
 	"github.com/kennygrant/sanitize"
@@ -137,7 +136,7 @@ func ExtractIMGs(html string) (imgs []*Img) {
 	}
 
 	info := image.NewInfo()
-	info.Header("User-Agent", configs.Settings.UserAgent)
+	info.Header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko")
 
 	doc.Find("img").Each(func(i int, s *gq.Selection) {
 		src, ok := s.Attr("src")
@@ -158,29 +157,4 @@ func ExtractIMGs(html string) (imgs []*Img) {
 	})
 
 	return
-}
-
-func GenMetaTitle(params map[string]string) string {
-	v := configs.Settings.AppName
-	if name, ok := params["name"]; ok {
-		return fmt.Sprintf("%[1]s | %[2]sの記事", v, name)
-	} else {
-		return fmt.Sprintf("%[1]s | 人気新着の記事まとめ", v)
-	}
-}
-
-func GenMetaKeywords(params map[string]string) string {
-	if name, ok := params["name"]; ok {
-		return fmt.Sprintf("%[1]s,%[2]s", configs.Settings.Keywords, name)
-	} else {
-		return configs.Settings.Keywords
-	}
-}
-
-func GenMetaDescription(params map[string]string) string {
-	if name, ok := params["name"]; ok {
-		return fmt.Sprintf("%[2]sを見るなら%[1]s", configs.Settings.Description, name)
-	} else {
-		return configs.Settings.Description
-	}
 }
